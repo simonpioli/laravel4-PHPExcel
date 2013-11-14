@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Laravel4-phpexcel : Laravel 4 wrapper for PHPOffice's PHPExcel library" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Laravel4-phpexcel</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Maatwebsite/laravel4-PHPExcel">View on GitHub</a>
+
+          <h1 id="project_title">Laravel4-phpexcel</h1>
+          <h2 id="project_tagline">Laravel 4 wrapper for PHPOffice's PHPExcel library</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Maatwebsite/laravel4-PHPExcel/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Maatwebsite/laravel4-PHPExcel/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+<a name="laravel-4-wrapper-for-phpexcel" class="anchor" href="#laravel-4-wrapper-for-phpexcel"><span class="octicon octicon-link"></span></a>Laravel 4 Wrapper for PHPExcel</h2>
+
+<pre><code>Warning: This package is still in development!
+</code></pre>
+
+<h1>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
+
+<p>Require this package in your <code>composer.json</code> and update composer. This will download the package and PHPExcel of PHPOffice.</p>
+
+<div class="highlight highlight-php"><pre><span class="s2">"maatwebsite/excel"</span><span class="o">:</span> <span class="s2">"dev-master"</span>
+</pre></div>
+
+<p>After updating composer, add the ServiceProvider to the providers array in <code>app/config/app.php</code></p>
+
+<div class="highlight highlight-php"><pre><span class="s1">'Maatwebsite\Excel\ExcelServiceProvider'</span><span class="p">,</span>
+</pre></div>
+
+<p>You can use the facade for shorter code. Add this to your aliasses:</p>
+
+<div class="highlight highlight-php"><pre><span class="s1">'Excel'</span> <span class="o">=&gt;</span> <span class="s1">'Maatwebsite\Excel\Facades\Excel'</span><span class="p">,</span>
+</pre></div>
+
+<h1>
+<a name="exporting" class="anchor" href="#exporting"><span class="octicon octicon-link"></span></a>Exporting</h1>
+
+<p>For creating an Excel file use:</p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">create</span><span class="p">(</span><span class="s1">'ExcelName'</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">sheet</span><span class="p">(</span><span class="s1">'SheetName'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">with</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="s1">'data'</span><span class="p">))</span>
+        <span class="o">-&gt;</span><span class="na">export</span><span class="p">(</span><span class="s1">'xls'</span><span class="p">);</span>
+</pre></div>
+
+<p>Multiple sheets are allowed</p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">create</span><span class="p">(</span><span class="s1">'ExcelName'</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">sheet</span><span class="p">(</span><span class="s1">'SheetName'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">with</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="s1">'data'</span><span class="p">))</span>
+        <span class="o">-&gt;</span><span class="na">sheet</span><span class="p">(</span><span class="s1">'SheetName'</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">with</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">'data'</span><span class="p">,</span> <span class="s1">'data'</span><span class="p">))</span>
+        <span class="o">-&gt;</span><span class="na">export</span><span class="p">(</span><span class="s1">'xls'</span><span class="p">);</span>
+</pre></div>
+
+<p>Export as CSV by using:</p>
+
+<div class="highlight highlight-php"><pre><span class="o">-&gt;</span><span class="na">export</span><span class="p">(</span><span class="s1">'csv'</span><span class="p">);</span>
+</pre></div>
+
+<h1>
+<a name="export-from-view-file" class="anchor" href="#export-from-view-file"><span class="octicon octicon-link"></span></a>Export from View file</h1>
+
+<p>It's possible to export a blade view file to xls or csv. The view file must be a table.
+Use <code>loadView()</code> with a view file and data to be used inside the view.</p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">loadView</span><span class="p">(</span><span class="s1">'folder.file'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'data'</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">export</span><span class="p">(</span><span class="s1">'xls'</span><span class="p">);</span>
+</pre></div>
+
+<p>If you want to give the file and worksheet a name chain <code>setTitle()</code> and <code>sheet()</code> after the <code>loadView()</code></p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">loadView</span><span class="p">(</span><span class="s1">'folder.file'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'data'</span><span class="p">))</span>
+        <span class="o">-&gt;</span><span class="na">setTitle</span><span class="p">(</span><span class="s1">'Title'</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">sheet</span><span class="p">(</span><span class="s1">'SheetName'</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">export</span><span class="p">(</span><span class="s1">'xls'</span><span class="p">);</span>
+</pre></div>
+
+<h1>
+<a name="importing" class="anchor" href="#importing"><span class="octicon octicon-link"></span></a>Importing</h1>
+
+<p>To import CSV data:</p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.csv'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+</pre></div>
+
+<p>Optionally you can select columns, by there column index.
+An empty <code>select()</code>, or no select at all, means we will return all columns</p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.csv'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+</pre></div>
+
+<p>If the first row is the table heading, you can give the <code>load()</code> method an extra parameter. This will make sure the first row is interpreted as heading. These seperate columns values will be used as array indexes. Now you can select columns by their name. Note that the string will be lowercase and spaces will be replaced by <code>-</code>.</p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.csv'</span><span class="p">,</span> <span class="k">true</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">'column1'</span><span class="p">,</span> <span class="s1">'column2'</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+</pre></div>
+
+<p>The delimiter can be changed right after the file load with <code>setDelimiter()</code>. The default delimiter is <code>,</code>, which has been set in the config file</p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.csv'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">setDelimiter</span><span class="p">(</span><span class="s1">';'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+</pre></div>
+
+<p>By default cells with formulas will not be calculated. If you want to calculate them, use the <code>calculate()</code> chain. You can change the default inside the config.</p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.xls'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">calculate</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+</pre></div>
+
+<p>If you want to limit the data which will be parsed, use <code>limit()</code>.</p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.csv'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+</pre></div>
+
+<p>For developping purposes you can choose to dump the returned parsed file to a readable array:</p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.csv'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">dump</span><span class="p">();</span>
+</pre></div>
+
+<h1>
+<a name="converting" class="anchor" href="#converting"><span class="octicon octicon-link"></span></a>Converting</h1>
+
+<p>To convert from one filetype to another, use <code>convert()</code>:</p>
+
+<div class="highlight highlight-php"><pre><span class="k">return</span> <span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.csv'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">convert</span><span class="p">(</span><span class="s1">'xls'</span><span class="p">);</span>
+</pre></div>
+
+<h1>
+<a name="config" class="anchor" href="#config"><span class="octicon octicon-link"></span></a>Config</h1>
+
+<p>Optional settings can be found in the config file. Use the artisan publish command to publish the config file to your project.</p>
+
+<div class="highlight highlight-php"><pre><span class="nx">php</span> <span class="nx">artisan</span> <span class="nx">config</span><span class="o">:</span><span class="nx">publish</span> <span class="nx">Maatwebsite</span><span class="o">/</span><span class="nx">excel</span>
+</pre></div>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Laravel4-phpexcel maintained by <a href="https://github.com/Maatwebsite">Maatwebsite</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
