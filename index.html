@@ -4,7 +4,7 @@
   <head>
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Laravel4-phpexcel : Laravel 4 wrapper for PHPOffice's PHPExcel library" />
+    <meta name="description" content="Laravel4-phpexcel : Laravel 4 wrapper for PHPOffice&#39;s PHPExcel library" />
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
@@ -18,8 +18,8 @@
         <header class="inner">
           <a id="forkme_banner" href="https://github.com/Maatwebsite/laravel4-PHPExcel">View on GitHub</a>
 
-          <h1 id="project_title">Maatwebsite Laravel 4 PHPExcel</h1>
-          <h2 id="project_tagline">Laravel 4 wrapper for PHPOffice's PHPExcel library</h2>
+          <h1 id="project_title">Laravel4-phpexcel</h1>
+          <h2 id="project_tagline">Laravel 4 wrapper for PHPOffice&#39;s PHPExcel library</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/Maatwebsite/laravel4-PHPExcel/zipball/master">Download this project as a .zip file</a>
@@ -32,7 +32,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h2>
-<a name="laravel-4-wrapper-for-phpexcel" class="anchor" href="#laravel-4-wrapper-for-phpexcel"><span class="octicon octicon-link"></span></a>Laravel 4 Wrapper for PHPExcel</h2>
+<a name="laravel-4-wrapper-for-phpexcel-v013" class="anchor" href="#laravel-4-wrapper-for-phpexcel-v013"><span class="octicon octicon-link"></span></a>Laravel 4 Wrapper for PHPExcel v0.1.3</h2>
 
 <pre><code>Warning: This package is still in development!
 </code></pre>
@@ -96,6 +96,20 @@ Use <code>loadView()</code> with a view file and data to be used inside the view
         <span class="o">-&gt;</span><span class="na">setTitle</span><span class="p">(</span><span class="s1">'Title'</span><span class="p">)</span>
         <span class="o">-&gt;</span><span class="na">sheet</span><span class="p">(</span><span class="s1">'SheetName'</span><span class="p">)</span>
         <span class="o">-&gt;</span><span class="na">export</span><span class="p">(</span><span class="s1">'xls'</span><span class="p">);</span>
+</pre></div>
+
+<p>It possible to use some basic styling inside the table.
+HTML tags <code>&lt;strong&gt;, &lt;i&gt; and &lt;b&gt;</code> are supported at this moment.</p>
+
+<h1>
+<a name="store-to-server" class="anchor" href="#store-to-server"><span class="octicon octicon-link"></span></a>Store to server</h1>
+
+<p>To store the file to the server use <code>store($extension, $path)</code> The path is optional, when this is empty, the default setting in the config will be used.</p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">loadView</span><span class="p">(</span><span class="s1">'folder.file'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'data'</span><span class="p">))</span>
+        <span class="o">-&gt;</span><span class="na">setTitle</span><span class="p">(</span><span class="s1">'Title'</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">sheet</span><span class="p">(</span><span class="s1">'SheetName'</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">store</span><span class="p">(</span><span class="s1">'xls'</span><span class="p">);</span>
 </pre></div>
 
 <h1>
