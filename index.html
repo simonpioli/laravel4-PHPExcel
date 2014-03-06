@@ -32,12 +32,22 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h2>
-<a name="laravel-4-wrapper-for-phpexcel-v013" class="anchor" href="#laravel-4-wrapper-for-phpexcel-v013"><span class="octicon octicon-link"></span></a>Laravel 4 Wrapper for PHPExcel v0.1.3</h2>
+<a name="laravel-4-wrapper-for-phpexcel-v030" class="anchor" href="#laravel-4-wrapper-for-phpexcel-v030"><span class="octicon octicon-link"></span></a>Laravel 4 Wrapper for PHPExcel v0.3.0</h2>
 
-<pre><code>Warning: This package is still in development!
-</code></pre>
+<p><a href="https://packagist.org/packages/maatwebsite/excel"><img src="https://poser.pugx.org/maatwebsite/excel/v/stable.png" alt="Latest Stable Version"></a> <a href="https://packagist.org/packages/maatwebsite/excel"><img src="https://poser.pugx.org/maatwebsite/excel/downloads.png" alt="Total Downloads"></a> <a href="https://packagist.org/packages/maatwebsite/excel"><img src="https://poser.pugx.org/maatwebsite/excel/v/unstable.png" alt="Latest Unstable Version"></a> <a href="https://packagist.org/packages/maatwebsite/excel"><img src="https://poser.pugx.org/maatwebsite/excel/license.png" alt="License"></a></p>
 
 <h1>
+<a name="new-to-v030" class="anchor" href="#new-to-v030"><span class="octicon octicon-link"></span></a>New to v0.3.0</h1>
+
+<ul>
+<li>CSV import fix</li>
+<li>Date formatting fix</li>
+<li>
+<code>loadView()</code> inline styles parsing</li>
+<li>
+<code>store()</code> can return information about the storage or can be followed by <code>-&gt;export()</code>
+</li>
+</ul><h1>
 <a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
 
 <p>Require this package in your <code>composer.json</code> and update composer. This will download the package and PHPExcel of PHPOffice.</p>
@@ -81,18 +91,23 @@
 <div class="highlight highlight-php"><pre><span class="o">-&gt;</span><span class="na">export</span><span class="p">(</span><span class="s1">'csv'</span><span class="p">);</span>
 </pre></div>
 
+<p>Export as Excel2007 by using:</p>
+
+<div class="highlight highlight-php"><pre><span class="o">-&gt;</span><span class="na">export</span><span class="p">(</span><span class="s1">'xlsx'</span><span class="p">);</span>
+</pre></div>
+
 <h1>
 <a name="export-from-view-file" class="anchor" href="#export-from-view-file"><span class="octicon octicon-link"></span></a>Export from View file</h1>
 
 <p>It's possible to export a blade view file to xls or csv. The view file must be a table.
 Use <code>loadView()</code> with a view file and data to be used inside the view.</p>
 
-<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">loadView</span><span class="p">(</span><span class="s1">'folder.file'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'data'</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">export</span><span class="p">(</span><span class="s1">'xls'</span><span class="p">);</span>
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">loadView</span><span class="p">(</span><span class="s1">'folder.file'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'value'</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">export</span><span class="p">(</span><span class="s1">'xls'</span><span class="p">);</span>
 </pre></div>
 
 <p>If you want to give the file and worksheet a name chain <code>setTitle()</code> and <code>sheet()</code> after the <code>loadView()</code></p>
 
-<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">loadView</span><span class="p">(</span><span class="s1">'folder.file'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'data'</span><span class="p">))</span>
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">loadView</span><span class="p">(</span><span class="s1">'folder.file'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'key'</span> <span class="o">=&gt;</span> <span class="s1">'value'</span><span class="p">))</span>
         <span class="o">-&gt;</span><span class="na">setTitle</span><span class="p">(</span><span class="s1">'Title'</span><span class="p">)</span>
         <span class="o">-&gt;</span><span class="na">sheet</span><span class="p">(</span><span class="s1">'SheetName'</span><span class="p">)</span>
         <span class="o">-&gt;</span><span class="na">export</span><span class="p">(</span><span class="s1">'xls'</span><span class="p">);</span>
@@ -101,15 +116,106 @@ Use <code>loadView()</code> with a view file and data to be used inside the view
 <p>It possible to use some basic styling inside the table.
 HTML tags <code>&lt;strong&gt;, &lt;i&gt; and &lt;b&gt;</code> are supported at this moment.</p>
 
-<h1>
+<p>Most of the inline styles are parsed:</p>
+
+<table>
+<thead><tr>
+<th>Style tag name</th>
+<th align="center">Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>background</td>
+<td align="center">#000000</td>
+</tr>
+<tr>
+<td>color</td>
+<td align="center">#FFFFFF</td>
+</tr>
+<tr>
+<td>font-weight</td>
+<td align="center">bold</td>
+</tr>
+<tr>
+<td>font-style</td>
+<td align="center">italic</td>
+</tr>
+<tr>
+<td>font-weight</td>
+<td align="center">bold</td>
+</tr>
+<tr>
+<td>font-size</td>
+<td align="center">20px</td>
+</tr>
+<tr>
+<td>font-family</td>
+<td align="center">Open Sans</td>
+</tr>
+<tr>
+<td>text-decoration</td>
+<td align="center">underline / line-through</td>
+</tr>
+<tr>
+<td>text-align</td>
+<td align="center">center/left/right/justify</td>
+</tr>
+<tr>
+<td>vertical-align</td>
+<td align="center">top/middle/bottom/justify</td>
+</tr>
+<tr>
+<td>borders</td>
+<td align="center">1px dashed #CCC</td>
+</tr>
+<tr>
+<td>border-*</td>
+<td align="center">1px dashed #CCC</td>
+</tr>
+</tbody>
+</table><h1>
 <a name="store-to-server" class="anchor" href="#store-to-server"><span class="octicon octicon-link"></span></a>Store to server</h1>
 
 <p>To store the file to the server use <code>store($extension, $path)</code> The path is optional, when this is empty, the default setting in the config will be used.</p>
 
-<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">loadView</span><span class="p">(</span><span class="s1">'folder.file'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'data'</span><span class="p">))</span>
+<div class="highlight highlight-php"><pre><span class="nv">$file</span> <span class="o">=</span> <span class="nx">Excel</span><span class="o">::</span><span class="na">loadView</span><span class="p">(</span><span class="s1">'folder.file'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'data'</span><span class="p">))</span>
         <span class="o">-&gt;</span><span class="na">setTitle</span><span class="p">(</span><span class="s1">'Title'</span><span class="p">)</span>
         <span class="o">-&gt;</span><span class="na">sheet</span><span class="p">(</span><span class="s1">'SheetName'</span><span class="p">)</span>
         <span class="o">-&gt;</span><span class="na">store</span><span class="p">(</span><span class="s1">'xls'</span><span class="p">);</span>
+</pre></div>
+
+<p>The <code>store($ext, $path, true)</code> method returns information about the stored file (filename, location, extension, ...);</p>
+
+<p>When the third parameter is false, it's possible to chain other methods. This example will store and export the same file:</p>
+
+<div class="highlight highlight-php"><pre><span class="nv">$file</span> <span class="o">=</span> <span class="nx">Excel</span><span class="o">::</span><span class="na">loadView</span><span class="p">(</span><span class="s1">'folder.file'</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">'data'</span><span class="p">))</span>
+        <span class="o">-&gt;</span><span class="na">setTitle</span><span class="p">(</span><span class="s1">'Title'</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">sheet</span><span class="p">(</span><span class="s1">'SheetName'</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">store</span><span class="p">(</span><span class="s1">'xls'</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">export</span><span class="p">(</span><span class="s1">'xls'</span><span class="p">);</span>
+</pre></div>
+
+<h1>
+<a name="freeze--lock-rows-and-columns" class="anchor" href="#freeze--lock-rows-and-columns"><span class="octicon octicon-link"></span></a>Freeze / lock rows and columns</h1>
+
+<p>To freeze the first row of the sheet:</p>
+
+<div class="highlight highlight-php"><pre><span class="o">-&gt;</span><span class="na">freezeFirstRow</span><span class="p">()</span>
+</pre></div>
+
+<p>To freeze the first column of the sheet:</p>
+
+<div class="highlight highlight-php"><pre><span class="o">-&gt;</span><span class="na">freezeFirstColumn</span><span class="p">()</span>
+</pre></div>
+
+<p>To freeze the first row and first column of the sheet:</p>
+
+<div class="highlight highlight-php"><pre><span class="o">-&gt;</span><span class="na">freezeFirstRowAndColumn</span><span class="p">()</span>
+</pre></div>
+
+<p>Freeze based on coordinate</p>
+
+<div class="highlight highlight-php"><pre><span class="o">-&gt;</span><span class="na">setFreeze</span><span class="p">(</span><span class="s1">'B1'</span><span class="p">)</span>
 </pre></div>
 
 <h1>
@@ -131,6 +237,11 @@ An empty <code>select()</code>, or no select at all, means we will return all co
 <div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.csv'</span><span class="p">,</span> <span class="k">true</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">select</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">'column1'</span><span class="p">,</span> <span class="s1">'column2'</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
 </pre></div>
 
+<p>To change the input encoding (default is UTF8), use the third parameter of <code>load()</code></p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.csv'</span><span class="p">,</span> <span class="k">false</span><span class="p">,</span> <span class="s1">'ISO-8859-1'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+</pre></div>
+
 <p>The delimiter can be changed right after the file load with <code>setDelimiter()</code>. The default delimiter is <code>,</code>, which has been set in the config file</p>
 
 <div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.csv'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">setDelimiter</span><span class="p">(</span><span class="s1">';'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
@@ -141,9 +252,30 @@ An empty <code>select()</code>, or no select at all, means we will return all co
 <div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.xls'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">calculate</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
 </pre></div>
 
+<p>By default cells will date/timestamps will be parsed to a PHP date Object and converted to Y-m-d.
+You can disable this feature by using <code>formatDates(false)</code></p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.xls'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">formatDates</span><span class="p">(</span><span class="k">false</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+</pre></div>
+
+<p>The date format can be changed by using <code>setDateFormat('Y-m-d')</code>. You can use all PHP Datetime formats;</p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.xls'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">setDateFormat</span><span class="p">(</span><span class="s1">'Y-m-d'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+</pre></div>
+
+<p>Optionally you can use Carbon to format the date. Use <code>useCarbon($methodName)</code></p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.xls'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">useCarbon</span><span class="p">(</span><span class="s1">'diffForHumans'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+</pre></div>
+
 <p>If you want to limit the data which will be parsed, use <code>limit()</code>.</p>
 
 <div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.csv'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">limit</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+</pre></div>
+
+<p>If you want to output the loaded data to an object, use <code>toObject()</code></p>
+
+<div class="highlight highlight-php"><pre><span class="nx">Excel</span><span class="o">::</span><span class="na">load</span><span class="p">(</span><span class="s1">'file.csv'</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">toObject</span><span class="p">();</span>
 </pre></div>
 
 <p>For developping purposes you can choose to dump the returned parsed file to a readable array:</p>
@@ -160,11 +292,47 @@ An empty <code>select()</code>, or no select at all, means we will return all co
 </pre></div>
 
 <h1>
+<a name="cell-and-range-formatting" class="anchor" href="#cell-and-range-formatting"><span class="octicon octicon-link"></span></a>Cell and range formatting</h1>
+
+<p>If you want to format a certain column or range, you can use <code>setColumnFormat(array())</code>.
+Use the column coordinate or range as array index and use the format code as array value.</p>
+
+<p>Example to get two leading zeros before the number:</p>
+
+<div class="highlight highlight-php"><pre><span class="o">-&gt;</span><span class="na">setColumnFormat</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="s1">'A2:K2'</span> <span class="o">=&gt;</span> <span class="s1">'0000'</span>
+ <span class="p">)</span>
+</pre></div>
+
+<h1>
+<a name="auto-filter" class="anchor" href="#auto-filter"><span class="octicon octicon-link"></span></a>Auto filter</h1>
+
+<p>Setting filters on the heading</p>
+
+<div class="highlight highlight-php"><pre><span class="o">-&gt;</span><span class="na">setAutoFilter</span><span class="p">()</span>
+</pre></div>
+
+<h1>
+<a name="setting-and-styling-borders" class="anchor" href="#setting-and-styling-borders"><span class="octicon octicon-link"></span></a>Setting and styling borders</h1>
+
+<p>To style and set all borders use:</p>
+
+<div class="highlight highlight-php"><pre><span class="o">-&gt;</span><span class="na">setAllBorder</span><span class="p">(</span><span class="s1">'thick'</span><span class="p">)</span>
+</pre></div>
+
+<p>To style the border of a range</p>
+
+<div class="highlight highlight-php"><pre><span class="o">-&gt;</span><span class="na">setBorder</span><span class="p">(</span><span class="s1">'A1:F10,'</span><span class="nx">thick</span><span class="err">'</span><span class="p">)</span>
+</pre></div>
+
+<p>You can use all the PHP Excel border styles.</p>
+
+<h1>
 <a name="config" class="anchor" href="#config"><span class="octicon octicon-link"></span></a>Config</h1>
 
 <p>Optional settings can be found in the config file. Use the artisan publish command to publish the config file to your project.</p>
 
-<div class="highlight highlight-php"><pre><span class="nx">php</span> <span class="nx">artisan</span> <span class="nx">config</span><span class="o">:</span><span class="nx">publish</span> <span class="nx">Maatwebsite</span><span class="o">/</span><span class="nx">excel</span>
+<div class="highlight highlight-php"><pre><span class="nx">php</span> <span class="nx">artisan</span> <span class="nx">config</span><span class="o">:</span><span class="nx">publish</span> <span class="nx">maatwebsite</span><span class="o">/</span><span class="nx">excel</span>
 </pre></div>
       </section>
     </div>
