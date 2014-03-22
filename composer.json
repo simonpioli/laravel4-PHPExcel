@@ -1,5 +1,5 @@
 {
-    "name": "maatwebsite/excel",
+    "name": "simonpioli/excel",
     "description": "Laravel wrapper for PHP Excel",
     "license": "LGPL",
     "keywords": ["laravel", "phpexcel", "excel"],
