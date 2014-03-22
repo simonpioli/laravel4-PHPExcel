@@ -115,6 +115,11 @@ class Excel extends \PHPExcel
         $this->ext = \File::extension($this->file);
         $this->title = basename($this->file, '.' . $this->ext);
         $this->firstRowAsLabel = $firstRowAsLabel;
+        
+        // Initiate cache
+        $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
+        $cacheSettings = array( 'memoryCacheSize' => '256MB');
+        PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 
         // Identify the format
         $this->format = \PHPExcel_IOFactory::identify($this->file);
