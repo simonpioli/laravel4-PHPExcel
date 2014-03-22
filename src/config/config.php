@@ -72,5 +72,17 @@ return array(
     */
 
     'path' => base_path(),
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Read sheet name
+    |--------------------------------------------------------------------------
+    |
+    | Name of first sheet of the file. Parsing multi-sheet files can be too
+    | memory hungry!
+    |
+    */
+
+    'restrictSheetName' => 'Sheet1',
 
 );
