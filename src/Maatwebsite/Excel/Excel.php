@@ -25,6 +25,7 @@ class Excel extends \PHPExcel
     public $format;
     public $delimiter;
     public $calculate;
+    public $restrictSheetName;
     public $limit = false;
     protected $ignoreEmpty = false;
     protected $isParsed = false;
@@ -58,6 +59,7 @@ class Excel extends \PHPExcel
         $this->delimiter = Config::get('excel::delimiter');
         $this->calculate = Config::get('excel::calculate');
         $this->ignoreEmpty = Config::get('excel::ignoreEmpty');
+        $this->restrictSheetName = Config::get('excel::restrictSheetName');
 
         // Reset i back to zero
         $this->i = 0;
@@ -105,7 +107,7 @@ class Excel extends \PHPExcel
      *
      */
 
-    public function load($file, $firstRowAsLabel = false, $inputEncoding = 'UTF-8')
+    public function load($file, $restrictSheet = false, $firstRowAsLabel = false, $inputEncoding = 'UTF-8')
     {
 
         // Set defaults
@@ -125,6 +127,10 @@ class Excel extends \PHPExcel
 
         // Set default delimiter
         //$this->reader->setDelimiter($this->delimiter);
+        
+        if ($restrictSheet) {
+            $this->reader->setLoadSheetsOnly(Config::get('excel::restrictSheetName'));
+        }
 
         // Load the file
         $this->excel = $this->reader->load($this->file);
