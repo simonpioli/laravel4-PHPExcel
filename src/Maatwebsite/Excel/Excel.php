@@ -129,7 +129,7 @@ class Excel extends \PHPExcel
         //$this->reader->setDelimiter($this->delimiter);
         
         if ($restrictSheet) {
-            $this->reader->setLoadSheetsOnly(Config::get('excel::restrictSheetName'));
+            $this->reader->setLoadSheetsOnly($this->restrictSheetName);
         }
 
         // Load the file
