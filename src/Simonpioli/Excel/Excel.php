@@ -33,6 +33,7 @@ class Excel extends \PHPExcel
     public $dataOnly;
     public $limit = false;
     public $cacheSettings = array();
+    protected $readerPrimed = false;
     protected $inputEncoding = 'UTF-8';
     protected $ignoreEmpty = false;
     protected $isParsed = false;
@@ -74,6 +75,46 @@ class Excel extends \PHPExcel
         $this->i = 0;
 
     }
+
+    /**
+     * Public Setters
+     */
+
+    public function setInputEncoding($inputEncoding)
+    {
+        $this->inputEncoding = $inputEncoding;
+
+        return $this;
+    }
+
+    public function setIgnoreEmpty($ignoreEmpty)
+    {
+        $this->ignoreEmpty = $ignoreEmpty;
+
+        return $this;
+    }
+
+    public function setFirstRowAsLabel($firstRowAsLabel)
+    {
+        $this->firstRowAsLabel = $firstRowAsLabel;
+
+        return $this;
+    }
+
+    public function setUseCarbon($useCarbon)
+    {
+        $this->useCarbon = $useCarbon;
+
+        return $this;
+    }
+
+    public function setCarbonMethod($carbonMethod)
+    {
+        $this->carbonMethod = $carbonMethod;
+
+        return $this;
+    }
+
 
     /**
      *
@@ -119,14 +160,25 @@ class Excel extends \PHPExcel
 
     }
 
-    public function primeReader($file, $firstRowAsLabel = false, $restrictSheet = false, $restrictSheetName = null, $inputEncoding = 'UTF-8')
+    /**
+     *  Prime the reader object to load an existing file
+     *  Use this method to allow changes to the reader's settings before executing
+     *  the load. To bypass this ability, you can run the load method directly.
+     *
+     *  @param str $file The file we want to load
+     *  @param bool $firstRowAsLabel Do we want to interpret de first row as labels?
+     *  @param bool|string $inputEncoding Passes input encoding for CSV file
+     *
+     *  @return $this
+     *
+     */
+    public function primeReader($file, $restrictSheet = false, $inputEncoding = false)
     {
 
         // Set defaults
         $this->file = $file;
         $this->ext = \File::extension($this->file);
         $this->title = basename($this->file, '.' . $this->ext);
-        $this->firstRowAsLabel = $firstRowAsLabel;
 
         // Identify the format
         $this->format = \PHPExcel_IOFactory::identify($this->file);
@@ -134,35 +186,40 @@ class Excel extends \PHPExcel
         // Init the reader
         $this->reader = \PHPExcel_IOFactory::createReader($this->format);
 
-        if ($this->format === 'CSV')
+        if ($this->format === 'CSV' && $inputEncoding !== false) {
             $this->reader->setInputEncoding($inputEncoding);
+        }
 
         // Set default delimiter
         //$this->reader->setDelimiter($this->delimiter);
 
         if ($restrictSheet) {
-            $this->reader->setLoadSheetsOnly($restrictSheetName ? $restrictSheetName : $this->restrictSheetName);
+            $this->reader->setLoadSheetsOnly($this->restrictSheetName);
         }
+
+        $this->readerPrimed = true;
+
+        return $this;
     }
 
     /**
-     *
      *  Load an existing file
      *
      *  @param str $file The file we want to load
      *  @param bool $firstRowAsLabel Do we want to interpret de first row as labels?
+     *  @param bool|string $inputEncoding Passes input encoding for CSV file
+     *
      *  @return $this
      *
      */
 
-    public function load($file, $firstRowAsLabel = false, $restrictSheet = false, $restrictSheetName = null, $inputEncoding = 'UTF-8')
+    public function load($file, $restrictSheet = false, $inputEncoding = false)
     {
 
-        // Set defaults
-        $this->file = $file;
-        $this->ext = \File::extension($this->file);
-        $this->title = basename($this->file, '.' . $this->ext);
-        $this->firstRowAsLabel = $firstRowAsLabel;
+        // Check if primed and prime if not already done
+        if (!$this->readerPrimed) {
+            $this->primeReader($file, $restrictSheet);
+        }
 
         // Load the file
         $this->excel = $this->reader->load($this->file);
@@ -189,14 +246,24 @@ class Excel extends \PHPExcel
 
     /**
      * Enable/disable date formating
-     * @param  bool $boolean True/false
+     *
+     * @param  bool $boolean
+     * @return object
      */
-    public function formatDates($boolean)
+    public function setFormatDates($boolean)
     {
         $this->formatDates = $boolean;
         return $this;
     }
 
+
+    /**
+     * Fast-access method to enable Carbon and specify the Carbon method
+     * if needed. To disable, use $this->setCarbonMethod(false)
+     *
+     * @param bool|string $method Carbon method to use - optional
+     * @return object
+     */
     public function useCarbon($method = false)
     {
         $this->useCarbon = true;
@@ -224,6 +291,7 @@ class Excel extends \PHPExcel
         include_once('Readers/HTML_reader.php');
 
         $this->reader = new HTML_reader;
+
         $this->excel = $this->reader->load($string, true);
 
         return $this;
