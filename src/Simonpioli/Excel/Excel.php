@@ -229,8 +229,13 @@ class Excel extends \PHPExcel
      *
      */
 
-    public function load($file, $restrictSheet = false, $inputEncoding = false)
+    public function load($file = false, $restrictSheet = false, $inputEncoding = false)
     {
+
+        if (!$this->file && !$file) {
+            throw new Exception("No file specified or primed", 1);
+            return $this;
+        }
 
         // Check if primed and prime if not already done
         if (!$this->readerPrimed) {
