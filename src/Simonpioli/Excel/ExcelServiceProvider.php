@@ -1,4 +1,6 @@
-<?php namespace Maatwebsite\Excel;
+<?php
+
+namespace Simonpioli\Excel;
 
 use Illuminate\Support\ServiceProvider;
 

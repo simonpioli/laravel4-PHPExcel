@@ -1,6 +1,6 @@
 <?php
 
-namespace Maatwebsite\Excel\Facades;
+namespace Simonpioli\Excel\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
