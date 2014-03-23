@@ -83,6 +83,11 @@ class Excel extends \PHPExcel
 
     public function setFilter($filter)
     {
+        if (!$filter) {
+            $this->filter = null;
+            return $this;
+        }
+
         $className = "\Simonpioli\Excel\Filters\\".$filter;
         if (class_exists($className)) {
             $this->filter = new $className;
