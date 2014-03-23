@@ -33,7 +33,7 @@ class Excel extends \PHPExcel
     public $dataOnly;
     public $limit = false;
     public $cacheSettings = array();
-    protected $filter = false;
+    public $filter = false;
     protected $readerPrimed = false;
     protected $inputEncoding = 'UTF-8';
     protected $ignoreEmpty = false;
@@ -83,7 +83,7 @@ class Excel extends \PHPExcel
 
     public function setFilter($filter)
     {
-        $className = \Simonpioli\Excel\Filters\.'$filter';
+        $className = "\Simonpioli\Excel\Filters\\".$filter;
         if (class_exists($className)) {
             $this->filter = new $className;
             return $this;
