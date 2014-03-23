@@ -19,7 +19,7 @@ class ExcelServiceProvider extends ServiceProvider {
 
 	public function boot()
 	{
-		$this->package('maatwebsite/excel');
+		$this->package('simonpioli/excel');
 	}
 
 	/**
