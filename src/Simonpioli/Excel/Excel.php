@@ -33,6 +33,7 @@ class Excel extends \PHPExcel
     public $dataOnly;
     public $limit = false;
     public $cacheSettings = array();
+    protected $filter = false;
     protected $readerPrimed = false;
     protected $inputEncoding = 'UTF-8';
     protected $ignoreEmpty = false;
@@ -79,6 +80,17 @@ class Excel extends \PHPExcel
     /**
      * Public Setters
      */
+
+    public function setFilter($filter)
+    {
+        $className = \Simonpioli\Excel\Filters\.'$filter';
+        if (class_exists($className)) {
+            $this->filter = new $className;
+            return $this;
+        } else {
+            throw new Exception("Filter $className does not exist");
+        }
+    }
 
     public function setInputEncoding($inputEncoding)
     {
@@ -195,6 +207,10 @@ class Excel extends \PHPExcel
 
         if ($restrictSheet) {
             $this->reader->setLoadSheetsOnly($this->restrictSheetName);
+        }
+
+        if ($this->filter) {
+            $this->reader->setReadFilter($this->filter);
         }
 
         $this->readerPrimed = true;
