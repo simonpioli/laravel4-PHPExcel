@@ -1,7 +1,11 @@
-<?php namespace Maatwebsite\Excel;
+<?php
+
+namespace Simonpioli\Excel;
 
 use Config;
-use Maatwebsite\Excel\Readers\HTML_reader;
+use Simonpioli\Excel\Readers\HTML_reader;
+use \PHPExcel_CachedObjectStorageFactory;
+use \PHPExcel_Settings;
 use \PHPExcel_Shared_Date;
 use \PHPExcel_Style_NumberFormat;
 
@@ -26,7 +30,10 @@ class Excel extends \PHPExcel
     public $delimiter;
     public $calculate;
     public $restrictSheetName;
+    public $dataOnly;
     public $limit = false;
+    public $cacheSettings = array();
+    protected $inputEncoding = 'UTF-8';
     protected $ignoreEmpty = false;
     protected $isParsed = false;
     protected $firstRowAsLabel = false;
@@ -60,6 +67,8 @@ class Excel extends \PHPExcel
         $this->calculate = Config::get('excel::calculate');
         $this->ignoreEmpty = Config::get('excel::ignoreEmpty');
         $this->restrictSheetName = Config::get('excel::restrictSheetName');
+        $this->dataOnly = Config::get('excel::dataOnly');
+        $this->cacheSettings = Config::get('excel::cacheSettings');
 
         // Reset i back to zero
         $this->i = 0;
@@ -97,17 +106,20 @@ class Excel extends \PHPExcel
 
     }
 
-    /**
-     *
-     *  Load an existing file
-     *
-     *  @param str $file The file we want to load
-     *  @param bool $firstRowAsLabel Do we want to interpret de first row as labels?
-     *  @return $this
-     *
-     */
+    public function enableCache($cacheSettings = null)
+    {
 
-    public function load($file, $restrictSheet = false, $firstRowAsLabel = false, $inputEncoding = 'UTF-8')
+        if (!$cacheSettings) {
+            $cacheSettings = Config::get('excel::cacheSettings');
+        }
+
+        // Initiate cache
+        $cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
+        PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
+
+    }
+
+    public function primeReader($file, $firstRowAsLabel = false, $restrictSheet = false, $restrictSheetName = null, $inputEncoding = 'UTF-8')
     {
 
         // Set defaults
@@ -115,11 +127,6 @@ class Excel extends \PHPExcel
         $this->ext = \File::extension($this->file);
         $this->title = basename($this->file, '.' . $this->ext);
         $this->firstRowAsLabel = $firstRowAsLabel;
-        
-        // Initiate cache
-        $cacheMethod = \PHPExcel_CachedObjectStorageFactory::cache_to_phpTemp;
-        $cacheSettings = array( 'memoryCacheSize' => '256MB');
-        \PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 
         // Identify the format
         $this->format = \PHPExcel_IOFactory::identify($this->file);
@@ -132,10 +139,30 @@ class Excel extends \PHPExcel
 
         // Set default delimiter
         //$this->reader->setDelimiter($this->delimiter);
-        
+
         if ($restrictSheet) {
-            $this->reader->setLoadSheetsOnly($this->restrictSheetName);
+            $this->reader->setLoadSheetsOnly($restrictSheetName ? $restrictSheetName : $this->restrictSheetName);
         }
+    }
+
+    /**
+     *
+     *  Load an existing file
+     *
+     *  @param str $file The file we want to load
+     *  @param bool $firstRowAsLabel Do we want to interpret de first row as labels?
+     *  @return $this
+     *
+     */
+
+    public function load($file, $firstRowAsLabel = false, $restrictSheet = false, $restrictSheetName = null, $inputEncoding = 'UTF-8')
+    {
+
+        // Set defaults
+        $this->file = $file;
+        $this->ext = \File::extension($this->file);
+        $this->title = basename($this->file, '.' . $this->ext);
+        $this->firstRowAsLabel = $firstRowAsLabel;
 
         // Load the file
         $this->excel = $this->reader->load($this->file);

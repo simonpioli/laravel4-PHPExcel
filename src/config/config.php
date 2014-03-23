@@ -25,7 +25,7 @@ return array(
     |
     */
 
-	'creator' => 'Maatwebsite',
+	'creator' => 'Simon Pioli',
 
     /*
     |--------------------------------------------------------------------------
@@ -72,7 +72,7 @@ return array(
     */
 
     'path' => base_path(),
-    
+
     /*
     |--------------------------------------------------------------------------
     | Read sheet name
@@ -84,5 +84,29 @@ return array(
     */
 
     'restrictSheetName' => 'Sheet1',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Read data only
+    |--------------------------------------------------------------------------
+    |
+    | Set this to true to only read the data from the cells. No formatting etc.
+    |
+    */
+
+    'dataOnly' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cache Settings
+    |--------------------------------------------------------------------------
+    |
+    | Set the size of the cell cache
+    |
+    */
+
+    'cacheSettings' => array(
+            'memoryCacheSize' => '32MB'
+        ),
 
 );

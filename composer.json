@@ -7,6 +7,10 @@
         {
             "name": "Maatwebsite.nl",
             "email": "info@maatwebsite.nl"
+        },
+        {
+            "name": "Simon Pioli",
+            "email": "simon@simonpioli.com"
         }
     ],
     "require": {
@@ -17,7 +21,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Maatwebsite\\Excel": "src/"
+            "Simonpioli\\Excel": "src/"
         }
     },
     "minimum-stability": "stable"
