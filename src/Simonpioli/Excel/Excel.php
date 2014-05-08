@@ -72,7 +72,7 @@ class Excel extends \PHPExcel
         $this->restrictSheetName = Config::get('excel::restrictSheetName');
         $this->dataOnly = Config::get('excel::dataOnly');
         $this->cacheSettings = Config::get('excel::cacheSettings');
-        $this->cacheType = Config::('excel::cacheType');
+        $this->cacheType = Config::get('excel::cacheType');
 
         // Reset i back to zero
         $this->i = 0;
@@ -178,7 +178,7 @@ class Excel extends \PHPExcel
         }
 
         // Initiate cache
-        $cacheMethod = PHPExcel_CachedObjectStorageFactory::$cacheType;
+        $cacheMethod = PHPExcel_CachedObjectStorageFactory::{$cacheType};
         PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 
     }
