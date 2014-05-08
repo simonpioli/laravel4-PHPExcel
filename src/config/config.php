@@ -98,6 +98,35 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
+    | Cache Type
+    |--------------------------------------------------------------------------
+    |
+    |PHPExcel_CachedObjectStorageFactory::cache_in_memory
+    |
+    |The default. If you don't initialise any caching method, then this is the method that PHPExcel will use. Cell objects are maintained in PHP memory as at present.
+    |
+    |PHPExcel_CachedObjectStorageFactory::cache_in_memory_serialized
+    |
+    |Using this caching method, cells are held in PHP memory as an array of serialized objects, which reduces the memory footprint with minimal performance overhead.
+    |
+    |PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip
+    |
+    |Like cache_in_memory_serialized, this method holds cells in PHP memory as an array of serialized objects, but gzipped to reduce the memory usage still further, although access to read or write a cell is slightly slower.
+    |
+    |PHPExcel_CachedObjectStorageFactory::cache_igbinary
+    |
+    |Uses PHPs igbinary extension (if its available) to serialize cell objects in memory. This is normally faster and uses less memory than standard PHP serialization, but isnt available in most hosting environments.
+    |
+    |PHPExcel_CachedObjectStorageFactory::cache_to_discISAM
+    |
+    |When using cache_to_discISAM all cells are held in a temporary disk file, with only an index to their location in that file maintained in PHP memory. This is slower than any of the cache_in_memory methods, but significantly reduces the memory footprint. By default, PHPExcel will use PHP's temp directory for the cache file, but you can specify a different directory when initialising cache_to_discISAM.
+    |
+    */
+
+    'cacheType' => 'cache_in_memory',
+
+    /*
+    |--------------------------------------------------------------------------
     | Cache Settings
     |--------------------------------------------------------------------------
     |
