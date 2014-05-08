@@ -178,7 +178,7 @@ class Excel extends \PHPExcel
         }
 
         // Initiate cache
-        $cacheMethod = PHPExcel_CachedObjectStorageFactory::{$cacheType};
+        $cacheMethod = PHPExcel_CachedObjectStorageFactory::$cacheType;
         PHPExcel_Settings::setCacheStorageMethod($cacheMethod, $cacheSettings);
 
     }
